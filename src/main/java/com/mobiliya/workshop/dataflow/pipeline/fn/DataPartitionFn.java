@@ -31,10 +31,12 @@ public class DataPartitionFn implements Partition.PartitionFn<String> {
 			}
 			if (totalPrice >= valueThreshold) {
 				return Constants.PARTITION_HIGH_VALUE;
+			} else {
+				return Constants.PARTITION_REMAINING;
 			}
 		} catch (IOException e) {
-			log.error(e.getMessage(), e);
+			//log.error(e.getMessage(), e);
+			return Constants.PARTITION_INVALID_DATA;
 		}
-		return Constants.PARTITION_REMAINING;
 	}
 }

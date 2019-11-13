@@ -47,6 +47,7 @@ public class DataFlowPipelineBuilder implements Serializable {
 		// Partitioned data
 		PCollection<String> highValueOrders = processedOrders.get(Constants.PARTITION_HIGH_VALUE);
 		PCollection<String> remainingOrders = processedOrders.get(Constants.PARTITION_REMAINING);
+		PCollection<String> invalidData = processedOrders.get(Constants.PARTITION_INVALID_DATA);
 
 		// Publish data
 		highValueOrders.apply("PubSub message", PubsubIO.writeStrings().to(options.getHighValueTopic()));
@@ -57,15 +58,22 @@ public class DataFlowPipelineBuilder implements Serializable {
 						options.getjdbcDriver(), options.getDatabaseURL())
 						.withUsername(options.getDatabaseUserName())
 						.withPassword(options.getDatabasePassword()))
-				.withStatement("insert into pipeline_output(order_json) values(?)")
+				.withStatement("insert into orders(order_json) values(?)")
 				.withPreparedStatementSetter(new JdbcIO.PreparedStatementSetter<String>() {
-					public void setParameters(String element, PreparedStatement query) {
-						try {
-							log.info("setParameters");
-							query.setString(1, element);
-						} catch (SQLException e) {
-							log.error(e.getMessage(), e);
-						}
+					public void setParameters(String element, PreparedStatement query) throws SQLException {
+						query.setString(1, element);
+					}
+				}));
+
+		invalidData.apply("Store invalid data", JdbcIO.<String>write()
+				.withDataSourceConfiguration(JdbcIO.DataSourceConfiguration.create(
+						options.getjdbcDriver(), options.getDatabaseURL())
+						.withUsername(options.getDatabaseUserName())
+						.withPassword(options.getDatabasePassword()))
+				.withStatement("insert into invalid_orders(order_json) values(?)")
+				.withPreparedStatementSetter(new JdbcIO.PreparedStatementSetter<String>() {
+					public void setParameters(String element, PreparedStatement query) throws SQLException {
+						query.setString(1, element);
 					}
 				}));
 		return pipeline;

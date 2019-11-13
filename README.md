@@ -17,7 +17,8 @@ Setup MySQL on your local machine and create database.
 ```
 CREATE DATABASE IF NOT EXISTS pipeline_db;
 USE pipeline_db;
-CREATE TABLE IF NOT EXISTS pipeline_output(id int NOT NULL AUTO_INCREMENT, order_json varchar(1000) NOT NULL, PRIMARY KEY (id));
+CREATE TABLE IF NOT EXISTS orders(id int NOT NULL AUTO_INCREMENT, order_json varchar(1000) NOT NULL, PRIMARY KEY (id));
+CREATE TABLE IF NOT EXISTS invalid_orders(id int NOT NULL AUTO_INCREMENT, order_json varchar(1000) NOT NULL, PRIMARY KEY (id));
 ```
 
 ### Deploy Project Locally
