@@ -23,8 +23,8 @@ public interface DataPipelineOptions extends GcpOptions {
 
 	@Validation.Required
 	@Description("Database URL command line argument.")
-	String getjdbcDriver();
-	void setjdbcDriver(String jdbcDriver);
+	String getJdbcDriver();
+	void setJdbcDriver(String jdbcDriver);
 
     @Validation.Required
     @Description("Database USERNAME command line argument.")

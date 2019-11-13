@@ -55,7 +55,7 @@ public class DataFlowPipelineBuilder implements Serializable {
 		// Store data
 		remainingOrders.apply("Database", JdbcIO.<String>write()
 				.withDataSourceConfiguration(JdbcIO.DataSourceConfiguration.create(
-						options.getjdbcDriver(), options.getDatabaseURL())
+						options.getJdbcDriver(), options.getDatabaseURL())
 						.withUsername(options.getDatabaseUserName())
 						.withPassword(options.getDatabasePassword()))
 				.withStatement("insert into orders(order_json) values(?)")
@@ -67,7 +67,7 @@ public class DataFlowPipelineBuilder implements Serializable {
 
 		invalidData.apply("Store invalid data", JdbcIO.<String>write()
 				.withDataSourceConfiguration(JdbcIO.DataSourceConfiguration.create(
-						options.getjdbcDriver(), options.getDatabaseURL())
+						options.getJdbcDriver(), options.getDatabaseURL())
 						.withUsername(options.getDatabaseUserName())
 						.withPassword(options.getDatabasePassword()))
 				.withStatement("insert into invalid_orders(order_json) values(?)")

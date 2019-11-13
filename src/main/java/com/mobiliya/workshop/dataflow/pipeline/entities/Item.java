@@ -1,5 +1,6 @@
 package com.mobiliya.workshop.dataflow.pipeline.entities;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,8 +12,13 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class Item implements Serializable {
 
-	int item_number;
-	int price_per_unit;
+	@JsonProperty("item_number")
+	int itemNumber;
+
+	@JsonProperty("price_per_unit")
+	int pricePerUnit;
+
+	@JsonProperty("quantity")
 	int quantity;
 
 }

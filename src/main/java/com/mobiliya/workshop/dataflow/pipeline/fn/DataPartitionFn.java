@@ -13,7 +13,7 @@ import java.util.ArrayList;
 @Slf4j
 public class DataPartitionFn implements Partition.PartitionFn<String> {
 
-	private int valueThreshold;
+	private final int valueThreshold;
 
 	public DataPartitionFn(int valueThreshold) {
 		this.valueThreshold = valueThreshold;
@@ -27,7 +27,7 @@ public class DataPartitionFn implements Partition.PartitionFn<String> {
 			int totalPrice = 0;
 			ArrayList<Item> items = order.getItems();
 			for (Item item: items) {
-				totalPrice += item.getPrice_per_unit() * item.getQuantity();
+				totalPrice += item.getPricePerUnit() * item.getQuantity();
 			}
 			if (totalPrice >= valueThreshold) {
 				return Constants.PARTITION_HIGH_VALUE;
@@ -35,7 +35,6 @@ public class DataPartitionFn implements Partition.PartitionFn<String> {
 				return Constants.PARTITION_REMAINING;
 			}
 		} catch (IOException e) {
-			//log.error(e.getMessage(), e);
 			return Constants.PARTITION_INVALID_DATA;
 		}
 	}

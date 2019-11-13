@@ -28,9 +28,9 @@ public class DataFlowPipelineBuilderTest {
         arguments.put(TestConstants.DATABASE_USER_NAME_KEY, TestConstants.DATABASE_USER_NAME);
         arguments.put(TestConstants.DATABASE_PWD_KEY, TestConstants.DATABASE_PWD);
         arguments.put(TestConstants.JDBC_DRIVER_KEY, TestConstants.JDBC_DRIVER);
-        // To logs the failure / exception data
+        arguments.put(TestConstants.PUBSUB_TOPIC_HIGH_VALUE_KEY, TestConstants.PUBSUB_TOPIC_HIGH_VALUE);
+        arguments.put(TestConstants.RUNNER_KEY,TestConstants.RUNNER);
 
-        arguments.put(TestConstants.RUNNER_KEY, TestConstants.RUNNER);
         DataFlowPipelineBuilder builder = new DataFlowPipelineBuilder();
 
         Pipeline actualPipeline =
@@ -46,19 +46,23 @@ public class DataFlowPipelineBuilderTest {
         Assert.assertEquals(arguments.get(TestConstants.DATABASE_URL_KEY), options.getDatabaseURL());
         Assert.assertEquals(arguments.get(TestConstants.DATABASE_USER_NAME_KEY), options.getDatabaseUserName());
         Assert.assertEquals(arguments.get(TestConstants.DATABASE_PWD_KEY), options.getDatabasePassword());
-        Assert.assertEquals(arguments.get(TestConstants.JDBC_DRIVER_KEY), options.getjdbcDriver());
+        Assert.assertEquals(arguments.get(TestConstants.JDBC_DRIVER_KEY), options.getJdbcDriver());
         Assert.assertEquals(arguments.get(TestConstants.RUNNER_KEY), options.getRunner().getSimpleName());
+        Assert.assertEquals(arguments.get(TestConstants.PUBSUB_TOPIC_HIGH_VALUE_KEY), options.getHighValueTopic());
     }
 
     @Test(expected = DataPipelineException.class)
     public void testDataFlowPipelineWithoutProject() {
 
         Map<String, String> arguments = new HashMap<>();
-        arguments.put(TestConstants.FILE_PATH_KEY, TestConstants.FILE_PATH);
-        arguments.put(TestConstants.VALUE_THRESHOLD_KEY, TestConstants.VALUE_THRESHOLD);
-
-        // To logs the failure / exception data
-        arguments.put(TestConstants.RUNNER_KEY, TestConstants.RUNNER);
+	    arguments.put(TestConstants.FILE_PATH_KEY, TestConstants.FILE_PATH);
+	    arguments.put(TestConstants.VALUE_THRESHOLD_KEY, TestConstants.VALUE_THRESHOLD);
+	    arguments.put(TestConstants.DATABASE_URL_KEY, TestConstants.DATABASE_URL);
+	    arguments.put(TestConstants.DATABASE_USER_NAME_KEY, TestConstants.DATABASE_USER_NAME);
+	    arguments.put(TestConstants.DATABASE_PWD_KEY, TestConstants.DATABASE_PWD);
+	    arguments.put(TestConstants.JDBC_DRIVER_KEY, TestConstants.JDBC_DRIVER);
+	    arguments.put(TestConstants.PUBSUB_TOPIC_HIGH_VALUE_KEY, TestConstants.PUBSUB_TOPIC_HIGH_VALUE);
+	    arguments.put(TestConstants.RUNNER_KEY,TestConstants.RUNNER);
 
         DataFlowPipelineBuilder sut = new DataFlowPipelineBuilder();
         sut.createDataPipeline(
@@ -71,11 +75,14 @@ public class DataFlowPipelineBuilderTest {
     public void testDataFlowPipelineWithoutFilePath() {
 
         Map<String, String> arguments = new HashMap<>();
-        arguments.put(TestConstants.PROJECT_KEY, TestConstants.PROJECT_ID);
-        arguments.put(TestConstants.VALUE_THRESHOLD_KEY, TestConstants.VALUE_THRESHOLD);
-
-        // To logs the failure / exception data
-        arguments.put(TestConstants.RUNNER_KEY, TestConstants.RUNNER);
+	    arguments.put(TestConstants.PROJECT_KEY, TestConstants.PROJECT_ID);
+	    arguments.put(TestConstants.VALUE_THRESHOLD_KEY, TestConstants.VALUE_THRESHOLD);
+	    arguments.put(TestConstants.DATABASE_URL_KEY, TestConstants.DATABASE_URL);
+	    arguments.put(TestConstants.DATABASE_USER_NAME_KEY, TestConstants.DATABASE_USER_NAME);
+	    arguments.put(TestConstants.DATABASE_PWD_KEY, TestConstants.DATABASE_PWD);
+	    arguments.put(TestConstants.JDBC_DRIVER_KEY, TestConstants.JDBC_DRIVER);
+	    arguments.put(TestConstants.PUBSUB_TOPIC_HIGH_VALUE_KEY, TestConstants.PUBSUB_TOPIC_HIGH_VALUE);
+	    arguments.put(TestConstants.RUNNER_KEY,TestConstants.RUNNER);
 
         DataFlowPipelineBuilder sut = new DataFlowPipelineBuilder();
         sut.createDataPipeline(
@@ -88,11 +95,14 @@ public class DataFlowPipelineBuilderTest {
     public void testDataFlowPipelineWithoutValueThreshold() {
 
         Map<String, String> arguments = new HashMap<>();
-        arguments.put(TestConstants.PROJECT_KEY, TestConstants.PROJECT_ID);
-        arguments.put(TestConstants.FILE_PATH_KEY, TestConstants.FILE_PATH);
-
-        // To logs the failure / exception data
-        arguments.put(TestConstants.RUNNER_KEY, TestConstants.RUNNER);
+	    arguments.put(TestConstants.PROJECT_KEY, TestConstants.PROJECT_ID);
+	    arguments.put(TestConstants.FILE_PATH_KEY, TestConstants.FILE_PATH);
+	    arguments.put(TestConstants.DATABASE_URL_KEY, TestConstants.DATABASE_URL);
+	    arguments.put(TestConstants.DATABASE_USER_NAME_KEY, TestConstants.DATABASE_USER_NAME);
+	    arguments.put(TestConstants.DATABASE_PWD_KEY, TestConstants.DATABASE_PWD);
+	    arguments.put(TestConstants.JDBC_DRIVER_KEY, TestConstants.JDBC_DRIVER);
+	    arguments.put(TestConstants.PUBSUB_TOPIC_HIGH_VALUE_KEY, TestConstants.PUBSUB_TOPIC_HIGH_VALUE);
+	    arguments.put(TestConstants.RUNNER_KEY,TestConstants.RUNNER);
 
         DataFlowPipelineBuilder sut = new DataFlowPipelineBuilder();
         sut.createDataPipeline(
@@ -100,4 +110,106 @@ public class DataFlowPipelineBuilderTest {
                         .map(e -> String.format(TestConstants.PATTERN, e.getKey(), e.getValue()))
                         .toArray(String[]::new));
     }
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testDataFlowPipelineWithoutDBUrl() {
+
+		Map<String, String> arguments = new HashMap<>();
+		arguments.put(TestConstants.PROJECT_KEY, TestConstants.PROJECT_ID);
+		arguments.put(TestConstants.FILE_PATH_KEY, TestConstants.FILE_PATH);
+		arguments.put(TestConstants.VALUE_THRESHOLD_KEY, TestConstants.VALUE_THRESHOLD);
+		arguments.put(TestConstants.DATABASE_USER_NAME_KEY, TestConstants.DATABASE_USER_NAME);
+		arguments.put(TestConstants.DATABASE_PWD_KEY, TestConstants.DATABASE_PWD);
+		arguments.put(TestConstants.JDBC_DRIVER_KEY, TestConstants.JDBC_DRIVER);
+		arguments.put(TestConstants.PUBSUB_TOPIC_HIGH_VALUE_KEY, TestConstants.PUBSUB_TOPIC_HIGH_VALUE);
+		arguments.put(TestConstants.RUNNER_KEY,TestConstants.RUNNER);
+
+		DataFlowPipelineBuilder sut = new DataFlowPipelineBuilder();
+		sut.createDataPipeline(
+				arguments.entrySet().stream()
+						.map(e -> String.format(TestConstants.PATTERN, e.getKey(), e.getValue()))
+						.toArray(String[]::new));
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testDataFlowPipelineWithoutDBUsername() {
+
+		Map<String, String> arguments = new HashMap<>();
+		arguments.put(TestConstants.PROJECT_KEY, TestConstants.PROJECT_ID);
+		arguments.put(TestConstants.FILE_PATH_KEY, TestConstants.FILE_PATH);
+		arguments.put(TestConstants.VALUE_THRESHOLD_KEY, TestConstants.VALUE_THRESHOLD);
+		arguments.put(TestConstants.DATABASE_URL_KEY, TestConstants.DATABASE_URL);
+		arguments.put(TestConstants.DATABASE_PWD_KEY, TestConstants.DATABASE_PWD);
+		arguments.put(TestConstants.JDBC_DRIVER_KEY, TestConstants.JDBC_DRIVER);
+		arguments.put(TestConstants.PUBSUB_TOPIC_HIGH_VALUE_KEY, TestConstants.PUBSUB_TOPIC_HIGH_VALUE);
+		arguments.put(TestConstants.RUNNER_KEY,TestConstants.RUNNER);
+
+		DataFlowPipelineBuilder sut = new DataFlowPipelineBuilder();
+		sut.createDataPipeline(
+				arguments.entrySet().stream()
+						.map(e -> String.format(TestConstants.PATTERN, e.getKey(), e.getValue()))
+						.toArray(String[]::new));
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testDataFlowPipelineWithoutDBPassword() {
+
+		Map<String, String> arguments = new HashMap<>();
+		arguments.put(TestConstants.PROJECT_KEY, TestConstants.PROJECT_ID);
+		arguments.put(TestConstants.FILE_PATH_KEY, TestConstants.FILE_PATH);
+		arguments.put(TestConstants.VALUE_THRESHOLD_KEY, TestConstants.VALUE_THRESHOLD);
+		arguments.put(TestConstants.DATABASE_URL_KEY, TestConstants.DATABASE_URL);
+		arguments.put(TestConstants.DATABASE_USER_NAME_KEY, TestConstants.DATABASE_USER_NAME);
+		arguments.put(TestConstants.JDBC_DRIVER_KEY, TestConstants.JDBC_DRIVER);
+		arguments.put(TestConstants.PUBSUB_TOPIC_HIGH_VALUE_KEY, TestConstants.PUBSUB_TOPIC_HIGH_VALUE);
+		arguments.put(TestConstants.RUNNER_KEY,TestConstants.RUNNER);
+
+		DataFlowPipelineBuilder sut = new DataFlowPipelineBuilder();
+		sut.createDataPipeline(
+				arguments.entrySet().stream()
+						.map(e -> String.format(TestConstants.PATTERN, e.getKey(), e.getValue()))
+						.toArray(String[]::new));
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testDataFlowPipelineWithoutJdbcDriver() {
+
+		Map<String, String> arguments = new HashMap<>();
+		arguments.put(TestConstants.PROJECT_KEY, TestConstants.PROJECT_ID);
+		arguments.put(TestConstants.FILE_PATH_KEY, TestConstants.FILE_PATH);
+		arguments.put(TestConstants.VALUE_THRESHOLD_KEY, TestConstants.VALUE_THRESHOLD);
+		arguments.put(TestConstants.DATABASE_URL_KEY, TestConstants.DATABASE_URL);
+		arguments.put(TestConstants.DATABASE_USER_NAME_KEY, TestConstants.DATABASE_USER_NAME);
+		arguments.put(TestConstants.DATABASE_PWD_KEY, TestConstants.DATABASE_PWD);
+		arguments.put(TestConstants.PUBSUB_TOPIC_HIGH_VALUE_KEY, TestConstants.PUBSUB_TOPIC_HIGH_VALUE);
+		arguments.put(TestConstants.RUNNER_KEY,TestConstants.RUNNER);
+
+		DataFlowPipelineBuilder sut = new DataFlowPipelineBuilder();
+		sut.createDataPipeline(
+				arguments.entrySet().stream()
+						.map(e -> String.format(TestConstants.PATTERN, e.getKey(), e.getValue()))
+						.toArray(String[]::new));
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testDataFlowPipelineWithoutPubSubTopic() {
+
+		Map<String, String> arguments = new HashMap<>();
+		arguments.put(TestConstants.PROJECT_KEY, TestConstants.PROJECT_ID);
+		arguments.put(TestConstants.FILE_PATH_KEY, TestConstants.FILE_PATH);
+		arguments.put(TestConstants.VALUE_THRESHOLD_KEY, TestConstants.VALUE_THRESHOLD);
+		arguments.put(TestConstants.DATABASE_URL_KEY, TestConstants.DATABASE_URL);
+		arguments.put(TestConstants.DATABASE_USER_NAME_KEY, TestConstants.DATABASE_USER_NAME);
+		arguments.put(TestConstants.DATABASE_PWD_KEY, TestConstants.DATABASE_PWD);
+		arguments.put(TestConstants.JDBC_DRIVER_KEY, TestConstants.JDBC_DRIVER);
+		arguments.put(TestConstants.RUNNER_KEY,TestConstants.RUNNER);
+
+		DataFlowPipelineBuilder sut = new DataFlowPipelineBuilder();
+		sut.createDataPipeline(
+				arguments.entrySet().stream()
+						.map(e -> String.format(TestConstants.PATTERN, e.getKey(), e.getValue()))
+						.toArray(String[]::new));
+	}
+
+
 }

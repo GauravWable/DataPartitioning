@@ -1,5 +1,6 @@
 package com.mobiliya.workshop.dataflow.pipeline.entities;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,11 +13,23 @@ import java.util.ArrayList;
 @AllArgsConstructor
 public class Order implements Serializable {
 
-	int order_id;
-	String create_ts;
-	String update_ts;
-	int customer_id;
-	String created_by;
-	String updated_by;
-	ArrayList<Item> items;
+	@JsonProperty("order_id")
+	int orderId;
+
+	@JsonProperty("create_ts")
+	String createTs;
+
+	@JsonProperty("update_ts")
+	String updateTs;
+
+	@JsonProperty("customer_id")
+	int customerId;
+	@JsonProperty("created_by")
+	String createdBy;
+
+	@JsonProperty("updated_by")
+	String updatedBy;
+
+	@JsonProperty("items")
+	private ArrayList<Item> items;
 }

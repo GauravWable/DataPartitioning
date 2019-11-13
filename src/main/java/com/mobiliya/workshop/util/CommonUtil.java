@@ -3,22 +3,13 @@ package com.mobiliya.workshop.util;
 import com.mobiliya.workshop.dataflow.pipeline.steps.FailureMetaData;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import org.apache.beam.sdk.values.TupleTag;
-import org.apache.beam.vendor.guava.v20_0.com.google.common.base.Preconditions;
 import org.apache.beam.vendor.guava.v20_0.com.google.common.base.Throwables;
-import org.apache.commons.io.FileUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class CommonUtil {
-
-    public static String displaySizeByByteCount(long byteCount) {
-        Preconditions.checkArgument(byteCount >= 0, "Byte count can not be less then 0");
-        String message = FileUtils.byteCountToDisplaySize(byteCount);
-        return "Size : " + message + " (" + byteCount + "  bytes)";
-    }
+class CommonUtil {
 
     public static String getTimeStamp() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSXXX");

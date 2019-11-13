@@ -9,7 +9,7 @@ import org.apache.beam.sdk.values.TupleTag;
 
 import java.io.Serializable;
 
-public class LogPipelineFailures implements Serializable {
+class LogPipelineFailures implements Serializable {
 
     private static final String FAILURE_TEXT = "LogFailures";
     public static final TupleTag<FailureMetaData> FAILURE_TAG = new TupleTag<FailureMetaData>() {};
