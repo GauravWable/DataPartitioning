@@ -2,10 +2,22 @@
 # data-pipeline
 ETL &amp; Persist component deployed as s streaming job for storing the messages being read from ingestion-queue
 
+### Pubsub
+Create a topic and subscription on Google Pubsub. Provide topic and subscription name in command line arguments.
+
 ### Authentication for PubSub service on local machine
 Authenticate with account on your local machine
 ```sh
 $ gcloud auth application-default login
+```
+
+### Database
+Setup MySQL on your local machine and create database.
+
+```
+CREATE DATABASE IF NOT EXISTS pipeline_db;
+USE pipeline_db;
+CREATE TABLE IF NOT EXISTS pipeline_output(id int NOT NULL AUTO_INCREMENT, order_json varchar(1000) NOT NULL, PRIMARY KEY (id));
 ```
 
 ### Deploy Project Locally
@@ -20,7 +32,7 @@ $ mvn install -DskipTests
 ```
 Run pipeline locally
 ```sh
-$ mvn -e -Pdirect-runner compile exec:java -Dexec.mainClass=com.mobiliya.workshop.pipeline.DataflowPipelineBuilder.StarterPipelineApplication -Dexec.args="--project=dev  --ingestionTopic=ingestion_dev --databaseURL=jdbc:postgresql://localhost:5432/postgres --databaseUserName=postgres --databasePassword=postgres --failureDataTopic=_dev_failure_data  --runner=DirectRunner"
+$ mvn -e -Pdirect-runner compile exec:java -Dexec.mainClass=com.mobiliya.workshop.pipeline.DataflowPipelineBuilder.StarterPipelineApplication -Dexec.args="--project=dev  --filePath="c:/beam/order/orders.json" --valueThreshold=50000 --runner=DirectRunner --databaseURL="jdbc:mysql://localhost:3306/pipeline_db" --databaseUserName=root --databasePassword=root --highValueTopic="projects/data-flow-samples/topics/high_value_data" --jdbcDriver="com.mysql.jdbc.Driver""
 ```
 Analyze project with SonarQube Server
 ```sh
