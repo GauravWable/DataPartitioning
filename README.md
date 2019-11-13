@@ -3,7 +3,7 @@
 ETL &amp; Persist component deployed as s streaming job for storing the messages being read from ingestion-queue
 
 ### Pubsub
-Create a topic and subscription on Google Pubsub. Provide topic and subscription name in command line arguments.
+Create a topic and subscription on Google Pubsub. Provide topic name in command line arguments.
 
 ### Authentication for PubSub service on local machine
 Authenticate with account on your local machine
